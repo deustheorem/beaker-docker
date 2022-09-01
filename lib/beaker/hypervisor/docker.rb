@@ -151,11 +151,13 @@ module Beaker
       # Talking against a remote docker host which is a normal docker host
       if @docker_type == 'docker' && ENV['DOCKER_HOST'] && !ENV.fetch('DOCKER_HOST','').include?(':///') && !nested_docker?
         ip = URI.parse(ENV['DOCKER_HOST']).host
+        @logger.debug("URI.parse.host #{ip}:#{port}")
       else
         # Swarm or local docker host
         if in_container? && !nested_docker?
           gw = network_settings['Gateway']
           ip = gw unless (gw.nil? || gw.empty?)
+          @logger.debug("Swarm/local to host #{ip}:#{port}")
         else
           # The many faces of container networking
 
