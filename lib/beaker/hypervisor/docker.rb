@@ -167,6 +167,8 @@ module Beaker
           ip = port22[0]['HostIp'] if port22
           port = port22[0]['HostPort'] if port22
 
+          @logger.debug("Host to Container #{ip}:#{port}")
+
           # Container to container
           unless ip && port
             ip = nil
@@ -174,6 +176,7 @@ module Beaker
 
             ip = network_settings['IPAddress']
             port = 22 if ip && !ip.empty?
+            @logger.debug("Container to Container #{ip}:#{port}")
           end
 
           # Container through gateway
@@ -187,6 +190,7 @@ module Beaker
               port22 = network_settings.dig('PortBindings','22/tcp')
               port = port22[0]['HostPort'] if port22
             end
+            @logger.debug("Container to Gateway #{ip}:#{port}")
           end
 
           # Legacy fallback
@@ -194,6 +198,7 @@ module Beaker
             port22 = network_settings.dig('Ports','22/tcp')
             ip = port22[0]["HostIp"] if port22
             port = port22[0]['HostPort'] if port22
+            @logger.debug("Fallback #{ip}:#{port}")
           end
         end
       end
