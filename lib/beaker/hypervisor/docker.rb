@@ -158,6 +158,9 @@ module Beaker
           gw = network_settings['Gateway']
           ip = gw unless (gw.nil? || gw.empty?)
           port22 = network_settings.dig('PortBindings','22/tcp')
+          if port22.nil? && network_settings.key?('Ports')
+            port22 = network_settings.dig('Ports','22/tcp')
+          end
           port = port22[0]['HostPort'] if port22
           @logger.debug("Swarm/local to host #{ip}:#{port}")
         else
