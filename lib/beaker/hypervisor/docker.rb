@@ -157,6 +157,8 @@ module Beaker
         if in_container? && !nested_docker?
           gw = network_settings['Gateway']
           ip = gw unless (gw.nil? || gw.empty?)
+          port22 = network_settings.dig('PortBindings','22/tcp')
+          port = port22[0]['HostPort'] if port22
           @logger.debug("Swarm/local to host #{ip}:#{port}")
         else
           # The many faces of container networking
